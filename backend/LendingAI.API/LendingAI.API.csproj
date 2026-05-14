@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+    <PackageReference Include="Azure.Cosmos" Version="3.36.0" />
+    <PackageReference Include="Azure.AI.OpenAI" Version="1.10.0" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.19.0" />
+    <PackageReference Include="Azure.Identity" Version="1.10.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LendingAI.Core\LendingAI.Core.csproj" />
+    <ProjectReference Include="..\LendingAI.Services\LendingAI.Services.csproj" />
+    <ProjectReference Include="..\LendingAI.Infrastructure\LendingAI.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

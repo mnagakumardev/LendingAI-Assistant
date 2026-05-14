@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AzureOpenAI__Endpoint=${AZURE_OPENAI_ENDPOINT}
+      - CosmosDB__ConnectionString=${COSMOS_CONNECTION_STRING}
+      - AzureStorage__ConnectionString=${AZURE_STORAGE_CONNECTION_STRING}
+    depends_on:
+      - cosmosdb
+    networks:
+      - lending-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000/api
+    depends_on:
+      - api
+    networks:
+      - lending-network
+
+  cosmosdb:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+    ports:
+      - "8081:8081"
+    environment:
+      - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3
+    networks:
+      - lending-network
+
+networks:
+  lending-network:
+    driver: bridge
