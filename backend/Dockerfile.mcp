@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+COPY ["LendingAI.MCP/LendingAI.MCP.csproj", "LendingAI.MCP/"]
+COPY ["LendingAI.Core/LendingAI.Core.csproj", "LendingAI.Core/"]
+
+RUN dotnet restore "LendingAI.MCP/LendingAI.MCP.csproj"
+COPY . .
+RUN dotnet build "LendingAI.MCP/LendingAI.MCP.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "LendingAI.MCP/LendingAI.MCP.csproj" -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=publish /app/publish .
+EXPOSE 3001
+ENTRYPOINT ["dotnet", "LendingAI.MCP.dll"]
